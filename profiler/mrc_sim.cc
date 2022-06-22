@@ -22,7 +22,12 @@ void MRC_SIM::_basic_info()
     }
     if(tl_p->reset()) log_err(logger, "reset trace loader error\n");
 }
-
+/**
+ * @brief return hit cnt and hit size
+ * 
+ * @param cache_size 
+ * @return pair<uint64_t, uint64_t> 
+ */
 pair<uint64_t, uint64_t> MRC_SIM::_one_test(uint64_t cache_size)
 {
     uint64_t hit_num = 0;

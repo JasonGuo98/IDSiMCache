@@ -32,6 +32,8 @@ public:
     };
 
     virtual uint64_t set(uint64_t ,  uint64_t );
+    
+    virtual uint64_t resize(uint64_t v);
 
     virtual uint64_t get(uint64_t, void * );
 
@@ -46,4 +48,7 @@ public:
 private:
     unordered_map<uint64_t, list_node_t * > lookup_table;
     list_t * list_p;
+
+    uint64_t pop_one_last_item();
+
 };

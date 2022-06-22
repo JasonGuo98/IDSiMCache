@@ -21,6 +21,8 @@ public:
 
     virtual uint64_t set(uint64_t, uint64_t) = 0;
 
+    virtual uint64_t resize(uint64_t) = 0;
+
     virtual uint64_t get(uint64_t, void *) = 0;
 
     virtual uint64_t next() = 0;
