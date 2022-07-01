@@ -12,6 +12,7 @@ class NormalTrace: virtual public TraceLoader
     uint64_t buffer_capacity;
     uint64_t max_io_num;
     uint64_t passed_io_cnt;
+    
 
     NormalTrace(LoaderType t, uint64_t _buffer_capacity = 4096):
     type(t),

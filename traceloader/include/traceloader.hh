@@ -2,6 +2,7 @@
 #include<cstdio>
 #include<stdlib.h>
 #include<string.h>
+#include<string>
 #include<stdint.h>
 #include<assert.h>
 #include<vector>
@@ -13,6 +14,7 @@ enum LoaderType{READ_ALL, BUFFER_READ};
 class TraceLoader
 {
 public:
+    string trace_name;
     
     TraceLoader()
     {

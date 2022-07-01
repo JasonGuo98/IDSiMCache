@@ -5,12 +5,24 @@ IDSDIR = ./datastructure/include
 IUtilsDIR = ./utils
 ITLDIR = ./traceloader/include
 IProfDIR = ./profiler/include
-CFLAGS=-I$(ICacheDIR) -I$(IDSDIR) -I$(IUtilsDIR) -I$(ITLDIR) -I$(IProfDIR) -std=c++11 -g
+IAnalDIR = ./analyzer/include
+CFLAGS=-I$(ICacheDIR) -I$(IDSDIR) -I$(IUtilsDIR) -I$(ITLDIR) -I$(IProfDIR) -I$(IAnalDIR) -std=c++11 -g
 
 
-all:  testNormalTrace testLRU testMRC
+all:  testNormalTrace testLRU testMRC testBasicinfo
 # all:  testNormalTrace testLRU
 	echo "make all"
+
+testBasicinfo: normal_trace.o testBasicinfo.o trace_basic_anal.o
+	$(CC) -o $@ $^ $(CFLAGS)
+
+
+testBasicinfo.o: testBasicinfo.cc
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+trace_basic_anal.o: ./analyzer/trace_basic_anal.cc
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
 
 
 testMRC: testMRC.o mrc_sim.o normal_trace.o LRU.o  _list.o list_node.o list_iterator.o

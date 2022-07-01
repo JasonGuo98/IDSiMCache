@@ -7,6 +7,9 @@ uint64_t NormalTrace::read_file(const char * filename, uint64_t _max_io_num = 0)
         log_err(logger, "already open one trace file\n");
         exit(1);
     }
+    
+    trace_name = filename;
+
     trace_FD = fopen(filename, "r");
     
     if (! trace_FD)
