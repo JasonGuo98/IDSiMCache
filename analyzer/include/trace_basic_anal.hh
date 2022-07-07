@@ -10,17 +10,17 @@ enum TimerType_t{REAL_TIMER, VIR_TIMER};
 class BasicAnalyzer
 {
 public:
-    uint64_t t_start, t_end;
-    uint64_t total_req, unique_req, only_once_req;
+    int64_t t_start, t_end;
+    int64_t total_req, unique_req, only_once_req;
     double average_req_cnt;
     double medium_req_cnt;
-    uint64_t max_req_cnt;
-    uint64_t min_req_cnt;
+    int64_t max_req_cnt;
+    int64_t min_req_cnt;
 
     TimerType_t timer_type;
     TraceLoader * tl_p;
 
-    unordered_map<uint64_t, uint64_t> req_cnt_map;
+    unordered_map<int64_t, int64_t> req_cnt_map;
 
 
     BasicAnalyzer(TimerType_t _timer_type, TraceLoader * tl):
@@ -38,7 +38,7 @@ public:
         only_once_req = 0;
     };
 
-    void print_info(uint64_t n_top_hot_item = 10);
+    void print_info(int64_t n_top_hot_item = 10);
 
 
 };

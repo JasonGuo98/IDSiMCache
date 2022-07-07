@@ -21,19 +21,19 @@ public:
         ;
     };
 
-    virtual uint64_t read_file(const char *, uint64_t) = 0;
+    virtual int64_t read_file(const char *, int64_t) = 0;
 
-    virtual uint64_t close_file() = 0;
+    virtual int64_t close_file() = 0;
 
     /**
      * @brief store next item key in &it, and return virtual time or physical time of this IO
      * 
      * @param it 
-     * @return uint64_t 
+     * @return int64_t 
      */
-    virtual uint64_t next_item(uint64_t & it,  uint64_t & it_size) = 0;
+    virtual int64_t next_item(int64_t & it,  int64_t & it_size) = 0;
 
-    virtual uint64_t reset() = 0;
+    virtual int64_t reset() = 0;
 
     virtual ~TraceLoader(){};
 

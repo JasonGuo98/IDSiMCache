@@ -15,7 +15,7 @@ static void list_remove_and_rpush(list_t * self, list_node_t * node)
 }
 
 
-uint64_t LRUCache::set(uint64_t key,  uint64_t value = 0)
+int64_t LRUCache::set(int64_t key,  int64_t value = 0)
 {
     auto iter = lookup_table.find(key);
     if (iter != lookup_table.end())
@@ -45,7 +45,7 @@ uint64_t LRUCache::set(uint64_t key,  uint64_t value = 0)
     return 0;
 }
 
-uint64_t LRUCache::get(uint64_t key,  void * p)
+int64_t LRUCache::get(int64_t key,  void * p)
 {
     
     auto iter = lookup_table.find(key);
@@ -58,13 +58,13 @@ uint64_t LRUCache::get(uint64_t key,  void * p)
     return 0;
 }
 
-uint64_t LRUCache::next()
+int64_t LRUCache::next()
 {
     current_access_count++;
     return current_access_count;
 }
 
-uint64_t LRUCache::reset(uint64_t new_capacity = 0)
+int64_t LRUCache::reset(int64_t new_capacity = 0)
 {
     while(1)
     {
@@ -86,7 +86,7 @@ uint64_t LRUCache::reset(uint64_t new_capacity = 0)
     return 0;
 }
 
-uint64_t LRUCache::resize(uint64_t target_capacity)
+int64_t LRUCache::resize(int64_t target_capacity)
 {
     assert(target_capacity > 0);
 
@@ -99,7 +99,7 @@ uint64_t LRUCache::resize(uint64_t target_capacity)
     return 0;
 }
 
-uint64_t LRUCache::pop_one_last_item()
+int64_t LRUCache::pop_one_last_item()
 {
     assert(current_size > 0);
     list_node_t *lru_item = list_lpop(list_p);
@@ -107,7 +107,7 @@ uint64_t LRUCache::pop_one_last_item()
     assert(lru_item);
     oneCacheLine_t * del_cl = (oneCacheLine_t * )(lru_item->val);
     
-    uint64_t del_key = del_cl->key;
+    int64_t del_key = del_cl->key;
     auto iter = lookup_table.find(del_key);
     assert(iter!=lookup_table.end());
     lookup_table.erase(iter);

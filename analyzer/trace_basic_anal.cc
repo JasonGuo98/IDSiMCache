@@ -18,9 +18,9 @@ number of obj/block accessed only once: 459198
 frequency mean: 1.30
 */
 
-void BasicAnalyzer::print_info(uint64_t n_top_hot_item)
+void BasicAnalyzer::print_info(int64_t n_top_hot_item)
 {
-    uint64_t it = 0, it_size = 0;
+    int64_t it = 0, it_size = 0;
 
     t_start = 0;
 
@@ -38,7 +38,7 @@ void BasicAnalyzer::print_info(uint64_t n_top_hot_item)
         }
     }
 
-    typedef pair<uint64_t, uint64_t> id_cnt_t;
+    typedef pair<int64_t, int64_t> id_cnt_t;
     auto cmp_func = [](const id_cnt_t & a,const id_cnt_t & b){return a.second > b.second;};
 
     vector<id_cnt_t> req_cnt_kv;

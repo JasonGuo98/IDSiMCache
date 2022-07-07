@@ -17,15 +17,15 @@ class Cache
 public:
     Cache() {};
 
-    virtual uint64_t reset(uint64_t v = 0) = 0;
+    virtual int64_t reset(int64_t v = 0) = 0;
 
-    virtual uint64_t set(uint64_t, uint64_t) = 0;
+    virtual int64_t set(int64_t, int64_t) = 0;
 
-    virtual uint64_t resize(uint64_t) = 0;
+    virtual int64_t resize(int64_t) = 0;
 
-    virtual uint64_t get(uint64_t, void *) = 0;
+    virtual int64_t get(int64_t, void *) = 0;
 
-    virtual uint64_t next() = 0;
+    virtual int64_t next() = 0;
 
     virtual ~Cache(){};
 };

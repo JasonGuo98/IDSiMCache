@@ -7,32 +7,32 @@ class NormalTrace: virtual public TraceLoader
     
     LoaderType type;
     FILE * trace_FD;
-    uint64_t * buffer;
-    vector<uint64_t> all_trace_vec;
-    uint64_t buffer_capacity;
-    uint64_t max_io_num;
-    uint64_t passed_io_cnt;
+    int64_t * buffer;
+    vector<int64_t> all_trace_vec;
+    int64_t buffer_capacity;
+    int64_t max_io_num;
+    int64_t passed_io_cnt;
     
 
-    NormalTrace(LoaderType t, uint64_t _buffer_capacity = 4096):
+    NormalTrace(LoaderType t, int64_t _buffer_capacity = 4096):
     type(t),
     trace_FD(NULL),
     buffer_capacity(_buffer_capacity),
-    buffer_idx(0),
-    buffer_size(0),
+    max_io_num(0),
     passed_io_cnt(0),
-    max_io_num(0)
+    buffer_idx(0),
+    buffer_size(0)
     {
         buffer = NULL;
         if (t == BUFFER_READ)
         {
             assert(_buffer_capacity > 0);
-            buffer = (uint64_t * )malloc(sizeof(uint64_t)*buffer_capacity);
+            buffer = (int64_t * )malloc(sizeof(int64_t)*buffer_capacity);
             if (! buffer)
             {
-                log_err(logger, "malloc %ld bytes error\n", sizeof(uint64_t)*buffer_capacity);
+                log_err(logger, "malloc %ld bytes error\n", sizeof(int64_t)*buffer_capacity);
             }
-            memset(buffer,0, sizeof(uint64_t)*buffer_capacity);
+            memset(buffer,0, sizeof(int64_t)*buffer_capacity);
         }
         else if(t == READ_ALL)
         {
@@ -40,13 +40,13 @@ class NormalTrace: virtual public TraceLoader
         }
     };
 
-    virtual uint64_t read_file(const char *, uint64_t);
+    virtual int64_t read_file(const char *, int64_t);
 
-    virtual uint64_t close_file();
+    virtual int64_t close_file();
 
-    virtual uint64_t next_item(uint64_t & it, uint64_t & it_size);
+    virtual int64_t next_item(int64_t & it, int64_t & it_size);
 
-    virtual uint64_t reset();
+    virtual int64_t reset();
 
     virtual ~NormalTrace()
     {
@@ -57,7 +57,7 @@ class NormalTrace: virtual public TraceLoader
             free(buffer);
     };
 private:
-    uint64_t buffer_idx;
-    uint64_t buffer_size;
-    uint64_t _buffer_read();
+    int64_t buffer_idx;
+    int64_t buffer_size;
+    int64_t _buffer_read();
 };

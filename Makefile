@@ -9,19 +9,20 @@ IAnalDIR = ./analyzer/include
 IPython = /usr/include/python3.8
 INumpy = /usr/include/python3.8/numpy
 IWrapper = ./pywrapper/include
-CFLAGS=-I$(ICacheDIR) -I$(IDSDIR) -I$(IUtilsDIR) -I$(ITLDIR) -I$(IProfDIR) -I$(IAnalDIR) -I$(INumpy) -I$(IPython) -I$(IWrapper) -std=c++11 -g -fPIC -Wall
+CFLAGS:=-I$(ICacheDIR) -I$(IDSDIR) -I$(IUtilsDIR) -I$(ITLDIR) -I$(IProfDIR) -I$(IAnalDIR) -I$(INumpy) -I$(IPython) -I$(IWrapper) 
+CFLAGS+= -std=c++11 -g -fPIC -Wall
+
+EXE = testNormalTrace testLRU testMRC testBasicinfo
+SHARED = c_MrcSim.so
 
 
 
 
-all:  testNormalTrace testLRU testMRC testBasicinfo c_MrcSim.so
-# all:  testNormalTrace testLRU
+all:  $(EXE) $(SHARED)
 	echo "make all"
 
 c_MrcSim.so: py_mrc_sim_wrapper.o mrc_sim.o normal_trace.o LRU.o _list.o list_node.o list_iterator.o
 	$(CC) -fPIC -shared $^ -o $@  $(CFLAGS) 
-	# $(CC) $^ -c -o $@  $(CFLAGS) 
-	# $(CC) -Xlinker -export-dynamic -fPIC $^ -o $@ -shared  $(CFLAGS) 
 
 py_mrc_sim_wrapper.o: ./pywrapper/py_mrc_sim_wrapper.cc
 	$(CC) -fPIC -c -o $@ $< $(CFLAGS)
@@ -82,6 +83,5 @@ list_iterator.o: ./datastructure/list_iterator.c
 .PHONY:clean all
 clean:
 	rm *.o
-	rm testLRU testNormalTrace testMRC
-	rm c_MrcSim.so
-	rm all
+	rm $(EXE)
+	rm $(SHARED)

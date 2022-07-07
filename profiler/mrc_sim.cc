@@ -3,12 +3,12 @@
 void MRC_SIM::_basic_info()
 {
     if(tl_p->reset()) log_err(logger, "reset trace loader error\n");
-    uint64_t it = 0, it_size = 0;
+    int64_t it = 0, it_size = 0;
     unique_req_num = 0;
     total_req_num = 0;
     unique_req_size = 0;
     total_req_size = 0;
-    unordered_map<uint64_t, uint64_t> obj_cnt;
+    unordered_map<int64_t, int64_t> obj_cnt;
     while(tl_p->next_item(it, it_size))
     {
         total_req_num++;
@@ -26,16 +26,16 @@ void MRC_SIM::_basic_info()
  * @brief return hit cnt and hit size
  * 
  * @param cache_size 
- * @return pair<uint64_t, uint64_t> 
+ * @return pair<int64_t, int64_t> 
  */
-pair<int64_t, int64_t> MRC_SIM::_one_test(uint64_t cache_size)
+pair<int64_t, int64_t> MRC_SIM::_one_test(int64_t cache_size)
 {
     int64_t hit_num = 0;
     int64_t hit_size = 0;
     cache_p->reset((int)cache_size);
     if(tl_p->reset()) log_err(logger, "reset trace loader error\n");
 
-    uint64_t it = 0, it_size = 0;
+    int64_t it = 0, it_size = 0;
     int64_t cnt = 0;
     while(tl_p->next_item(it, it_size))
     {
@@ -58,7 +58,7 @@ pair<int64_t, int64_t> MRC_SIM::_one_test(uint64_t cache_size)
 /**
  * @brief return <cache size, hit cnt, hit size>
  * 
- * @return vector<vector<uint64_t>> 
+ * @return vector<vector<int64_t>> 
  */
 vector<vector<int64_t>> MRC_SIM::run_MRC()
 {
@@ -68,9 +68,9 @@ vector<vector<int64_t>> MRC_SIM::run_MRC()
         assert(0);
     }
     vector<vector<int64_t>> results_hit_cnt;
-    uint64_t _cache_size = start_anal_cache_size;
-    uint64_t next_cache_size = start_anal_cache_size;
-    uint64_t points_done = 0;
+    int64_t _cache_size = start_anal_cache_size;
+    int64_t next_cache_size = start_anal_cache_size;
+    int64_t points_done = 0;
 
     while(1)
     {
@@ -93,13 +93,13 @@ vector<vector<int64_t>> MRC_SIM::run_MRC()
 
     for (auto one_mr : results_hit_cnt)
     {
-        printf("cache_size %d, hit cnt %d, hit size %d\n", one_mr[0], one_mr[1], one_mr[2]);
+        printf("cache_size %ld, hit cnt %ld, hit size %ld\n", one_mr[0], one_mr[1], one_mr[2]);
     }
 
     return results_hit_cnt;
 }
 
-uint64_t MRC_SIM::bind_data_cache(TraceLoader * _tl_p, Cache * _cache_p)
+int64_t MRC_SIM::bind_data_cache(TraceLoader * _tl_p, Cache * _cache_p)
 {
     
     if(!_tl_p) {log_err(logger, "No trace loader\n"); exit(1);}

@@ -12,8 +12,8 @@ int main()
 
     loader->read_file(trace_name, 100000);
 
-    uint64_t it = 0, it_size = 0;
-    uint64_t cnt = 0;
+    int64_t it = 0, it_size = 0;
+    int64_t cnt = 0;
     while(loader->next_item(it, it_size))
     {
         cout<<cnt++<<": "<<it<<endl;

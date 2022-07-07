@@ -1,6 +1,6 @@
 #include "normal_trace.hh"
 
-uint64_t NormalTrace::read_file(const char * filename, uint64_t _max_io_num = 0)
+int64_t NormalTrace::read_file(const char * filename, int64_t _max_io_num = 0)
 {
     if(trace_FD)
     {
@@ -27,8 +27,8 @@ uint64_t NormalTrace::read_file(const char * filename, uint64_t _max_io_num = 0)
     }
     else if(type == READ_ALL)
     {
-        uint64_t it;
-        uint64_t last_size = all_trace_vec.size();
+        int64_t it;
+        int64_t last_size = all_trace_vec.size();
         while(fscanf(trace_FD, "%lu", &it) != EOF)
         {
             all_trace_vec.push_back(it);
@@ -48,7 +48,7 @@ uint64_t NormalTrace::read_file(const char * filename, uint64_t _max_io_num = 0)
     return 0;
 }
 
-uint64_t NormalTrace::close_file()
+int64_t NormalTrace::close_file()
 {
     if (! trace_FD)
     {
@@ -76,7 +76,7 @@ uint64_t NormalTrace::close_file()
     return 0;
 }
 
-uint64_t NormalTrace::_buffer_read()
+int64_t NormalTrace::_buffer_read()
 {
     if (!trace_FD)
     {
@@ -91,7 +91,7 @@ uint64_t NormalTrace::_buffer_read()
 
     buffer_size = 0;
     buffer_idx = 0;
-    uint64_t it;
+    int64_t it;
     while(buffer_size < buffer_capacity && fscanf(trace_FD, "%lu", &it) != EOF)
     {
         buffer[buffer_size++] = it;
@@ -103,7 +103,7 @@ uint64_t NormalTrace::_buffer_read()
     return buffer_size;
 }
 
-uint64_t NormalTrace:: next_item(uint64_t & it, uint64_t & it_size)
+int64_t NormalTrace:: next_item(int64_t & it, int64_t & it_size)
 {
     if (max_io_num && passed_io_cnt >= max_io_num)
     {
@@ -155,7 +155,7 @@ uint64_t NormalTrace:: next_item(uint64_t & it, uint64_t & it_size)
     return 0;
 }
 
-uint64_t NormalTrace::reset()
+int64_t NormalTrace::reset()
 {
     if (!trace_FD)
     {
