@@ -38,12 +38,12 @@ public:
 
     uint64_t bind_data_cache(TraceLoader * _tl_p, Cache * _cache_p );
     // only for homogeneous objects
-    vector<vector<uint64_t>> run_MRC();
+    vector<vector<int64_t>> run_MRC();
 
 private:
     void _basic_info();
 
     
-    pair<uint64_t, uint64_t> _one_test(uint64_t);
+    pair<int64_t, int64_t> _one_test(uint64_t);
 
 };

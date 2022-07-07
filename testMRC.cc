@@ -8,14 +8,21 @@ using namespace std;
 
 int main()
 {
-    const char * trace_name = "data/zipf_trace.txt";
+    // const char * trace_name = "data/zipf_trace.txt";
+
+    const char * filename = "data/zipf_trace.txt";
+    uint64_t max_trace_len = 10000;
+    uint64_t cache_size_start = 1;
+    double size_factor = 2;
+    uint64_t n_test_points = 10;
+
     // TraceLoader * loader = new NormalTrace(READ_ALL);
     TraceLoader * loader = new NormalTrace(BUFFER_READ);
 
-    loader->read_file(trace_name, 10000);
+    loader->read_file(filename, max_trace_len);
     Cache * cache = new LRUCache(4);
 
-    MRC_SIM mrc_sim(2, 1, 10);
+    MRC_SIM mrc_sim(size_factor, cache_size_start, n_test_points);
 
     mrc_sim.bind_data_cache(loader, cache);
 
