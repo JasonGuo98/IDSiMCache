@@ -1,6 +1,6 @@
 #include "mrc_sim.hh"
 #include "normal_trace.hh"
-#include "lru.hh"
+#include "LRU.hh"
 #include "LFU.hh"
 
 #include <iostream>
