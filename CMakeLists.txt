@@ -17,14 +17,14 @@ aux_source_directory(./dataStructure dataStructure)
 aux_source_directory(./cache cache)
 aux_source_directory(./traceloader traceloader)
 aux_source_directory(./profiler profiler)
-include_directories(./analyzer analyzer)
+aux_source_directory(./analyzer analyzer)
 
 
 add_executable(testLFU ./test/testLFU.cc ${dataStructure} ${cache} ${traceloader} ${profiler})
 add_executable(testLRU ./test/testLRU.cc ${dataStructure} ${cache} ${traceloader} ${profiler})
 add_executable(testMRC ./test/testMRC.cc ${dataStructure} ${cache} ${traceloader} ${profiler})
 add_executable(testNormalTrace ./test/testNormalTrace.cc ${dataStructure} ${cache} ${traceloader} ${profiler})
-# add_executable(testBasicInfo ./test/testBasicInfo.cc ${dataStructure} ${cache} ${traceloader} ${profiler} ${analyzer})
+add_executable(testBasicInfo ./test/testBasicInfo.cc ${dataStructure} ${cache} ${traceloader} ${profiler} ${analyzer})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
