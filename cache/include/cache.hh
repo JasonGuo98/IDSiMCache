@@ -1,7 +1,7 @@
 #pragma once
 #include "utils.hh"
-#include"murmur3.h"
-#include"list.h"
+#include "murmur3.h"
+#include "list.h"
 #include <unordered_map>
 #include <stdint.h>
 #include <assert.h>
@@ -11,11 +11,19 @@
 
 using namespace std;
 
+struct oneCacheLine_t
+{
+    int64_t key;
+    int64_t value;
+    int64_t freq;
+    int64_t prio;
+    // char buffer[1];
+};
 
 class Cache
 {
 public:
-    Cache() {};
+    Cache(){};
 
     virtual int64_t reset(int64_t v = 0) = 0;
 
@@ -29,5 +37,3 @@ public:
 
     virtual ~Cache(){};
 };
-
-
