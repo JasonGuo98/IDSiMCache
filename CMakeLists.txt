@@ -57,11 +57,9 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     # set(CMAKE_FIND_USE_CMAKE_PATH FALSE)
     set(Python3_FIND_STRATEGY LOCATION)
     set(Python3_ROOT_DIR "/home/wzj/anaconda3")#填python环境的路径
-    # set(Python3_ROOT_DIR "/home/wzj/anaconda3/envs/temp")
-    # set(Python3_ROOT_DIR "/usr/include/python3.8")
-    
+    # set(Python3_ROOT_DIR "/home/wzj/anaconda3/envs/temp")    
 
-    #使用find_package(python COMPONENTS numpy)总是报错，显示找不到numpy，可能是电脑相关配置的原因(在Windows上编译没有出现这个问题)
+    #使用find_package(python COMPONENTS numpy)总是报错，显示找不到numpy，可能是电脑相关配置的原因
     #这里直接将要用到的numpy文件通过路径添加进来
     set(Python3_NumPy_INCLUDE_DIRS "/home/wzj/anaconda3/lib/site-packages/numpy/core/include")
     include_directories(${Python3_NumPy_INCLUDE_DIRS})
@@ -70,6 +68,11 @@ ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     MESSAGE(STATUS "current platform: Windows")
     # set(Python3_FIND_STRATEGY LOCATION)
     # set(Python3_ROOT_DIR "D:/Anaconda/envs/myenvs")#填python环境的路径
+
+    #使用find_package(python COMPONENTS numpy)总是报错，显示找不到numpy，可能是电脑相关配置的原因
+    #这里直接将要用到的numpy文件通过路径添加进来
+    set(Python3_NumPy_INCLUDE_DIRS "D:/Anaconda/Lib/site-packages/numpy/core/include")
+    include_directories(${Python3_NumPy_INCLUDE_DIRS})
 
 ENDIF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
