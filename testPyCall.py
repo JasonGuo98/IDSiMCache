@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import c_MrcSim
+from lib import c_MrcSim
 
-ret_mrc = c_MrcSim.runMrcSim("/mnt/d/study/Cache_algo/IDSiMCache/data/zipf_trace.txt", 10000, 1, 2, 10)
+ret_mrc = c_MrcSim.runMrcSim("./data/zipf_trace.txt", 10000, 1, 2, 10)
 
 print(ret_mrc.shape)
 print(ret_mrc)

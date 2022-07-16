@@ -1,9 +1,7 @@
 #include <Python.h>
-#include <arrayobject.h>
+#include <numpy/arrayobject.h>
 #include <stdlib.h>
 #include "utils.hh"
-
-
 
 /** Convert a c++ 2D vector into a numpy array
  *
@@ -16,53 +14,57 @@
  *
  * Warning this routine makes a copy of the memory!
  */
-template<typename T>
-static PyArrayObject* vector_to_nparray(const vector< vector<T> >& vec, int type_num = PyArray_DOUBLE){ 
+template <typename T>
+static PyArrayObject *vector_to_nparray(const vector<vector<T>> &vec, int type_num = PyArray_DOUBLE)
+{
    // if convert Double use PyArray_DOUBLE
-   
+
    // rows not empty
-   if( !vec.empty() ){
+   if (!vec.empty())
+   {
 
       // column not empty
-      if( !vec[0].empty() ){
+      if (!vec[0].empty())
+      {
 
-        npy_intp nRows = vec.size();
-        npy_intp nCols = vec[0].size();
-        npy_intp dims[2] = {nRows, nCols};
-        PyArrayObject* vec_array = NULL;
-        vec_array = (PyArrayObject *) PyArray_SimpleNew(2, dims, type_num);
+         npy_intp nRows = vec.size();
+         npy_intp nCols = vec[0].size();
+         npy_intp dims[2] = {nRows, nCols};
+         PyArrayObject *vec_array = NULL;
+         vec_array = (PyArrayObject *)PyArray_SimpleNew(2, dims, type_num);
 
-        T *vec_array_pointer = (T*) PyArray_DATA(vec_array);
+         T *vec_array_pointer = (T *)PyArray_DATA(vec_array);
 
+         // copy vector line by line ... maybe could be done at one
+         for (size_t iRow = 0; iRow < vec.size(); ++iRow)
+         {
+            if (vec[iRow].size() != nCols)
+            {
+               Py_DECREF(vec_array); // delete
+               throw(string("Can not convert vector<vector<T>> to np.array, since c++ matrix shape is not uniform."));
+            }
 
-        // copy vector line by line ... maybe could be done at one
-        for (size_t iRow=0; iRow < vec.size(); ++iRow){
-          if( vec[iRow].size() != nCols){
-             Py_DECREF(vec_array); // delete
-             throw(string("Can not convert vector<vector<T>> to np.array, since c++ matrix shape is not uniform."));
-          }
+            copy(vec[iRow].begin(), vec[iRow].end(), vec_array_pointer + iRow * nCols);
+         }
+         return (vec_array);
 
-          copy(vec[iRow].begin(),vec[iRow].end(),vec_array_pointer+iRow*nCols);
-        }
-        return (vec_array);
+         // Empty columns
+      }
+      else
+      {
+         npy_intp dims[2] = {(npy_intp)vec.size(), 0};
+         return (PyArrayObject *)PyArray_ZEROS(2, dims, PyArray_FLOAT, 0);
+      }
 
-     // Empty columns
-     } else {
-        npy_intp dims[2] = {(npy_intp)vec.size(), 0};
-        return (PyArrayObject*) PyArray_ZEROS(2, dims, PyArray_FLOAT, 0);
-     }
-
-
-
-   // no data at all
-   } else {
+      // no data at all
+   }
+   else
+   {
       npy_intp dims[2] = {0, 0};
-      return (PyArrayObject*) PyArray_ZEROS(2, dims, PyArray_FLOAT, 0);
+      return (PyArrayObject *)PyArray_ZEROS(2, dims, PyArray_FLOAT, 0);
    }
    return NULL;
-
 }
-
 
 /** Convert a c++ vector into a numpy array
  *
@@ -75,25 +77,28 @@ static PyArrayObject* vector_to_nparray(const vector< vector<T> >& vec, int type
  *
  * Warning this routine makes a copy of the memory!
  */
-template<typename T>
-static PyArrayObject* vector_to_nparray(const vector<T>& vec, int type_num = PyArray_DOUBLE){
+template <typename T>
+static PyArrayObject *vector_to_nparray(const vector<T> &vec, int type_num = PyArray_DOUBLE)
+{
 
    // rows not empty
-   if( !vec.empty() ){
+   if (!vec.empty())
+   {
 
-       size_t nRows = vec.size();
-       npy_intp dims[1] = {nRows};
+      size_t nRows = vec.size();
+      npy_intp dims[1] = {nRows};
 
-       PyArrayObject* vec_array = (PyArrayObject *) PyArray_SimpleNew(1, dims, type_num);
-       T *vec_array_pointer = (T*) PyArray_DATA(vec_array);
+      PyArrayObject *vec_array = (PyArrayObject *)PyArray_SimpleNew(1, dims, type_num);
+      T *vec_array_pointer = (T *)PyArray_DATA(vec_array);
 
-       copy(vec.begin(),vec.end(),vec_array_pointer);
-       return vec_array;
+      copy(vec.begin(), vec.end(), vec_array_pointer);
+      return vec_array;
 
-   // no data at all
-   } else {
-      npy_intp dims[1] = {0};
-      return (PyArrayObject*) PyArray_ZEROS(1, dims, PyArray_FLOAT, 0);
+      // no data at all
    }
-
+   else
+   {
+      npy_intp dims[1] = {0};
+      return (PyArrayObject *)PyArray_ZEROS(1, dims, PyArray_FLOAT, 0);
+   }
 }
