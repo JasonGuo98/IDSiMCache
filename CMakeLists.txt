@@ -22,19 +22,19 @@ aux_source_directory(./analyzer analyzer)
 
 
 add_executable(testLFU ./test/testLFU.cc ${datastructure} ${cache} ${traceloader} ${profiler})#Windows生成.exe文件 Linux生成无扩展名文件
-add_library(TestLFU SHARED ./test/testLFU.cc ${datastructure} ${cache} ${traceloader} ${profiler})#Windows生成.dll和.dll.a文件 Linux生成.so文件
+add_library(_testLFU SHARED ./test/testLFU.cc ${datastructure} ${cache} ${traceloader} ${profiler})#Windows生成.dll和.dll.a文件 Linux生成.so文件
 
 add_executable(testLRU ./test/testLRU.cc ${datastructure} ${cache} ${traceloader} ${profiler})
-add_library(TestLRU SHARED ./test/testLRU.cc ${datastructure} ${cache} ${traceloader} ${profiler})
+add_library(_testLRU SHARED ./test/testLRU.cc ${datastructure} ${cache} ${traceloader} ${profiler})
 
 add_executable(testMRC ./test/testMRC.cc ${datastructure} ${cache} ${traceloader} ${profiler})
-add_library(TestMRC SHARED ./test/testMRC.cc ${datastructure} ${cache} ${traceloader} ${profiler})
+add_library(_testMRC SHARED ./test/testMRC.cc ${datastructure} ${cache} ${traceloader} ${profiler})
 
 add_executable(testNormalTrace ./test/testNormalTrace.cc ${datastructure} ${cache} ${traceloader} ${profiler})
-add_library(TestNormalTrace SHARED ./test/testNormalTrace.cc ${datastructure} ${cache} ${traceloader} ${profiler})
+add_library(_testNormalTrace SHARED ./test/testNormalTrace.cc ${datastructure} ${cache} ${traceloader} ${profiler})
 
 add_executable(testBasicInfo ./test/testBasicInfo.cc ${datastructure} ${cache} ${traceloader} ${profiler} ${analyzer})
-add_library(TestBasicInfo SHARED ./test/testBasicInfo.cc ${datastructure} ${cache} ${traceloader} ${profiler} ${analyzer})
+add_library(_testBasicInfo SHARED ./test/testBasicInfo.cc ${datastructure} ${cache} ${traceloader} ${profiler} ${analyzer})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
