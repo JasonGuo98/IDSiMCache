@@ -108,7 +108,7 @@ int64_t LFUCache::set(int64_t key, int64_t value = 0)
     }
     else //缓存中已经存在当前缓存对象，则将其值和使用频率更新
     {
-        // 与 get 操作基本一致，除了需要更新缓存的值
+        // 与 get 操作基本一致，除了需要更新缓存的值和使用频率
         list_node_t *node = it->second;
         oneCacheLine_t *cl = (oneCacheLine_t *)node->val;
         int freq = cl->freq;

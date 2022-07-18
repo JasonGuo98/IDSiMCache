@@ -17,6 +17,7 @@ struct oneCacheLine_t
     int64_t value;
     int64_t freq;
     int64_t prio;
+    list_t *list = nullptr;
     // char buffer[1];
 };
 

@@ -35,6 +35,9 @@ add_executable(testLFU ./test/testLFU.cc ${datastructure} ${cache} ${traceloader
 add_executable(testLRU ./test/testLRU.cc ${datastructure} ${cache} ${traceloader} ${profiler})
 # add_library(_testLRU SHARED ./test/testLRU.cc ${datastructure} ${cache} ${traceloader} ${profiler})
 
+add_executable(testARC ./test/testARC.cc ${datastructure} ${cache} ${traceloader} ${profiler})
+# add_library(_testARC SHARED ./test/testARC.cc ${datastructure} ${cache} ${traceloader} ${profiler})
+
 add_executable(testMRC ./test/testMRC.cc ${datastructure} ${cache} ${traceloader} ${profiler})
 # add_library(_testMRC SHARED ./test/testMRC.cc ${datastructure} ${cache} ${traceloader} ${profiler})
 
