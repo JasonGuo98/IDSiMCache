@@ -1,7 +1,9 @@
 #include "Python.h"
 #include "mrc_sim.hh"
 #include "normal_trace.hh"
+#include "block_trace.hh"
 #include "LRU.hh"
+#include "ARC.hh"
 #include "stdint.h"
 #include <numpy/arrayobject.h>
 #include "wrapper.hh"
@@ -16,10 +18,10 @@ extern "C"
     {
         log_info(logger, "=============[args]: %s %ld %ld %lf %ld\n", filename, max_trace_len, cache_size_start, size_factor, n_test_points);
         // TraceLoader * loader = new NormalTrace(READ_ALL);
-        TraceLoader *loader = new NormalTrace(BUFFER_READ);
+        TraceLoader *loader = new BlockTrace(BUFFER_READ);
 
         loader->read_file(filename, max_trace_len);
-        Cache *cache = new LRUCache(1);
+        Cache *cache = new ARCCache(1);
 
         MRC_SIM mrc_sim(size_factor, cache_size_start, n_test_points);
 
@@ -56,15 +58,22 @@ extern "C"
     PyObject *wrap_sim_MRC(PyObject *self, PyObject *args)
     {
         char *filename = NULL;
-        int64_t max_trace_len;
-        int64_t cache_size_start;
+        int32_t max_trace_len;
+        int32_t cache_size_start;
         double size_factor;
-        int64_t n_test_points;
+        int32_t n_test_points;
+
+        PyObject *repr = PyObject_Repr(args);
+        PyObject *str = PyUnicode_AsEncodedString(repr, "utf-8", "~E~");
+        const char *bytes = PyBytes_AS_STRING(str);
+        printf("PyObject *args: %s\n", bytes);
 
         if (!PyArg_ParseTuple(args, "siidi:sim_MRC", &filename, &max_trace_len, &cache_size_start, &size_factor, &n_test_points))
             return NULL;
 
-        printf("[args]: %s %ld %ld %lf %ld\n", filename, max_trace_len, cache_size_start, size_factor, n_test_points);
+        printf("[args]: %s %d %d %lf %d\n", filename, max_trace_len, cache_size_start, size_factor, n_test_points);
+
+        // pause();
 
         auto ret_mrc = sim_MRC(filename, max_trace_len, cache_size_start, size_factor, n_test_points);
 

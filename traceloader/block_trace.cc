@@ -42,8 +42,12 @@ int64_t BlockTrace::next_item(int64_t &it, int64_t &it_size)
         log_err(logger, "no open trace file\n");
         assert(trace_FD);
     }
-    if (passed_io_cnt % 100000 == 0)
-        printf("passed_io_cnt:%d\n", passed_io_cnt);
+    if (passed_io_cnt % 10000000 == 0)
+    {
+        printf("passed_io_cnt:%ld\n", passed_io_cnt);
+        printf("current_line:%d %d %d %d\n", current_line.starting_block, current_line.number_of_blocks, current_line.ignore, current_line.request_number);
+        printf("current_block:%ld\n", current_block);
+    }
     if (passed_io_cnt == -1) //已经将文件读完了
     {
         log_info(logger, "all IO passed\n");
@@ -97,6 +101,7 @@ int64_t BlockTrace::reset()
         assert(trace_FD);
     }
     fseek(trace_FD, 0, SEEK_SET); //文件指针回到起始位置
+    current_block = -1;           //重新开始读的标记
     passed_io_cnt = 0;
     return 0;
 }

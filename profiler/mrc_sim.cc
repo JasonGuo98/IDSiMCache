@@ -79,7 +79,7 @@ vector<vector<int64_t>> MRC_SIM::run_MRC()
 
     while (1)
     {
-        // printf("_cache_size %d\n", _cache_size);
+        printf("_cache_size: %d\n", _cache_size);
         _cache_size = next_cache_size;
         auto ret = _one_test(_cache_size); // return hit cnt and hit size
         vector<int64_t> ret_c_size;
@@ -91,13 +91,16 @@ vector<vector<int64_t>> MRC_SIM::run_MRC()
         next_cache_size = _cache_size * mul_factor;
         if (next_cache_size == _cache_size)
             next_cache_size = _cache_size + 1;
+
         points_done++;
-        if ((int)next_cache_size < (int)total_req_size && (points_done < max_test_points))
-            ;
-        else
-        {
+        if (points_done >= max_test_points)
             break;
-        } // 这里要加（int），非常奇怪！
+        // if ((int)next_cache_size < (int)total_req_size && (points_done < max_test_points))
+        //     ;
+        // else
+        // {
+        //     break;
+        // } // 这里要加（int），非常奇怪！
     };
 
     for (auto one_mr : results_hit_cnt)
