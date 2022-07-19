@@ -60,7 +60,7 @@ int64_t ARCCache::get(int64_t key, void *p)
     else if (cl->list == _b1) // case2，在ghost_lru1链表中找到了该缓存对象
     {
         //若ghost_lru1的长度大于等于ghost_lru2的长度，则使lru1的预期长度p加1，否则使p加(ghost_lru2的长度/ghost_lru1的长度)
-        //原论文对这个策略的描述： Thus, smaller the size of B1 , the larger the increment.(B1就是这里的ghost_lru1)
+        //原论文对这个策略的描述： Thus, smaller the size of B1 , the larger the increment.
         //(可能原论文中还有我没注意到的地方更具体地描述了这个策略是如何想出来的，也可能就是构造来的，总之最后实验效果是好的)
         auto t = _b1->len >= _b2->len ? 1 : _b2->len / (double)_b1->len;
         t1_p = min(t1_p + t, (double)cache_capacity); //预期长度不能超过缓存空间大小
@@ -84,7 +84,7 @@ int64_t ARCCache::get(int64_t key, void *p)
     else if (cl->list == _b2) // case3，在ghost_lru2中找到了该缓存对象
     {
         //若ghost_lru2的长度大于等于ghost_lru1的长度，则使lru1的预期长度p减1，否则使p减(ghost_lru1的长度/ghost_lru2的长度)
-        //原论文对这个策略的描述： Thus, smaller the size of B2 , the larger the decrement.(B1就是这里的ghost_lru1)
+        //原论文对这个策略的描述： Thus, smaller the size of B2 , the larger the decrement.
         //(可能原论文中还有我没注意到的地方更具体地描述了这个策略是如何想出来的，也可能就是构造来的，总之最后实验效果是好的)
         auto t = _b2->len >= _b1->len ? 1 : _b1->len / (double)_b2->len;
         t1_p = max(t1_p - t, 0.0); //预期长度不能小于0
@@ -149,7 +149,7 @@ int64_t ARCCache::set(int64_t key, int64_t value = 0)
             if (size >= cache_capacity) //若总长度大于等于缓存空间大小，说明lru1和lru2总长度一定为缓存空间大小(根据算法的步骤可知，在lru1和lru2的总长度达到缓存空间大小之前，一定不会往ghost_lru1和ghost_lru2中添加元素)
             {
                 if (size == cache_capacity * 2) //若总长度正好等于缓存空间大小的两倍，即lru1+ghost_lru1的长度<缓存空间大小,lru2+ghost_lru2的长度>缓存空间大小
-                {                               //则需要维持总长度不大于2倍的缓存空间大小，因此删除ghost_lru2末尾的元素
+                {                               //则需要维持四个链表的总长度以及lru2+ghost_lru2的总长度不大于2倍的缓存空间大小，因此删除ghost_lru2末尾的元素
                     list_node_t *del_item = list_rpop(_b2);
                     oneCacheLine_t *del_cl = (oneCacheLine_t *)del_item->val;
                     obj_table.erase(del_cl->key);
@@ -216,7 +216,8 @@ void ARCCache::replace(bool in_b2) //将lru1或lru2中的尾部的缓存对象�
         oneCacheLine_t *cl = (oneCacheLine_t *)_t2->tail->val;
         cl->value = -1; //删除缓存对象的缓存
         assert(cl->list == _t2);
-        move_to(_t2->tail, _b1); //将lru1中尾部的缓存对象标记加入ghost_lru1链表中
+        move_to(_t2->tail, _b2); //将lru2中尾部的缓存对象标记加入ghost_lru2链表中
     }
+    // lru1和lru2的总长度-1，lru1_ghost和lru2_ghost的总长度+1
     current_size--;
 }

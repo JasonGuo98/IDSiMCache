@@ -23,7 +23,7 @@ int main()
 
     for (auto one_mr : all_mr)
     {
-        printf("cache_size %lu, hit cnt %lu, hit size %lu\n", one_mr[0], one_mr[1], one_mr[2]);
+        printf("cache_size %ld, hit cnt %ld, hit size %ld, total_req_num %ld\n", one_mr[0], one_mr[1], one_mr[2], mrc_sim.total_req_num);
     }
     return 0;
 }

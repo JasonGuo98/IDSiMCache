@@ -65,9 +65,13 @@ public:
     virtual ~ARCCache()
     {
         obj_table.clear();
-        list_destroy(_t1);
-        list_destroy(_b1);
-        list_destroy(_t2);
-        list_destroy(_b2);
+        if (_t1 != nullptr)
+            list_destroy(_t1);
+        if (_b1 != nullptr)
+            list_destroy(_b1);
+        if (_t2 != nullptr)
+            list_destroy(_t2);
+        if (_b2 != nullptr)
+            list_destroy(_b2);
     };
 };
