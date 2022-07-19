@@ -11,9 +11,7 @@ int64_t ARCCache::reset(int64_t new_capacity = 0)
     obj_table.clear();
 
     if (_t1 != nullptr)
-    {
         list_destroy(_t1);
-    }
     if (_b1 != nullptr)
         list_destroy(_b1);
     if (_t2 != nullptr)
@@ -74,11 +72,14 @@ int64_t ARCCache::get(int64_t key, void *p)
         //将当前找到的缓存对象移动到lru2的首部
         move_to(iter->second, _t2);
 
+        //之前将此缓存对象移动到ghost链表中时其value值被置为-1，代表从缓存中删除了，现在将其value置为其key，代表重新加入缓存
+        cl->value = key;
+
         //从ghost_lru1向lru2中添加了缓存对象，又从lru1或lru2向ghost1或ghost2中删除了缓存对象
         //因此最后lru1和lru2以及ghost_lru1和ghost_lru2的总长度均没有改变
 
         assert_c();
-        return cl->value;
+        return -2; //由于是在ghost链表中命中的，对象实际不在缓存中，只是被重新放入缓存，因此这里返回-2(与什么都没找到时返回的-1作区分)，代表miss
     }
     else if (cl->list == _b2) // case3，在ghost_lru2中找到了该缓存对象
     {
@@ -91,11 +92,14 @@ int64_t ARCCache::get(int64_t key, void *p)
         replace(true);              //将lru1或lru2中的尾部的缓存对象移动到ghost_lru1或ghost_lru2中
         move_to(iter->second, _t2); //将当前找到的缓存对象移动到lru2的首部
 
+        //之前将此缓存对象移动到ghost链表中时其value值被置为-1，代表从缓存中删除了，现在将其value置为其key，代表重新加入缓存
+        cl->value = key;
+
         //从ghost_lru2向lru2中添加了缓存对象，又从lru1或lru2向ghost1或ghost2中删除了缓存对象
         //因此最后lru1和lru2以及ghost_lru1和ghost_lru2的总长度均没有改变
 
         assert_c();
-        return cl->value; //返回对象地址
+        return -2; //由于是在ghost链表中命中的，对象实际不在缓存中，只是被重新放入缓存，因此这里返回-2(与什么都没找到时返回的-1作区分)，代表miss
     }
     return 0;
 }
